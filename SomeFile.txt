@@ -1,0 +1,93 @@
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                Welcome to Francinette, a 42 tester framework!                ║
+╚═══════════════════════╦══════════════════════════════╦═══════════════════════╝
+                        ║         get_next_line        ║
+                        ╚══════════════════════════════╝
+⠋ Preparing framework⠙ Preparing framework✔ Preparing framework
+⠋ Executing: norminette⠙ Executing: norminette⠹ Executing: norminette✔ Executing: norminette
+ℹ Running tests: gnlTester (https://github.com/Tripouille/gnlTester)
+[34m[Mandatory]
+[01m[K../get_next_line_utils.c:[m[K In function ‘[01m[Kadd_to_stash[m[K’:
+[01m[K../get_next_line_utils.c:41:6:[m[K [01;31m[Kerror: [m[Kvariable ‘[01m[Ki[m[K’ set but not used [[01;31m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-but-set-variable-Werror=unused-but-set-variable]8;;[m[K]
+   41 |  int [01;31m[Ki[m[K;
+      |      [01;31m[K^[m[K
+cc1: all warnings being treated as errors
+make: *** [Makefile:41: 1mandatory] Error 1
+
+Problem compiling tests.
+ℹ Running tests: fsoares (my own tests)
+[1mtester.c:53:7: [0m[0;1;31merror: [0m[1mconflicting types for 'get_line'[0m
+char *get_line(char *s, int i) {
+[0;1;32m      ^
+[0m[1m./../get_next_line.h:23:6: [0m[0;1;30mnote: [0mprevious declaration is here[0m
+int             get_line(char **stash, char **line);
+[0;1;32m                ^
+[0m[1mtester.c:83:29: [0m[0;1;31merror: [0m[1mincompatible pointer types passing 'char [10000]' to parameter of type 'char **' [-Werror,-Wincompatible-pointer-types][0m
+                char *expected = get_line(content, i);
+[0;1;32m                                          ^~~~~~~
+[0m[1m./../get_next_line.h:23:22: [0m[0;1;30mnote: [0mpassing argument to parameter 'stash' here[0m
+int             get_line(char **stash, char **line);
+[0;1;32m                                ^
+[0m[1mtester.c:83:38: [0m[0;1;31merror: [0m[1mincompatible integer to pointer conversion passing 'int' to parameter of type 'char **' [-Werror,-Wint-conversion][0m
+                char *expected = get_line(content, i);
+[0;1;32m                                                   ^
+[0m[1m./../get_next_line.h:23:36: [0m[0;1;30mnote: [0mpassing argument to parameter 'line' here[0m
+int             get_line(char **stash, char **line);
+[0;1;32m                                              ^
+[0m[1mtester.c:83:9: [0m[0;1;31merror: [0m[1mincompatible integer to pointer conversion initializing 'char *' with an expression of type 'int' [-Werror,-Wint-conversion][0m
+                char *expected = get_line(content, i);
+[0;1;32m                      ^          ~~~~~~~~~~~~~~~~~~~~
+[0m4 errors generated.
+make: [Makefile:23: mandatory] Error 1 (ignored)
+[1mtester.c:53:7: [0m[0;1;31merror: [0m[1mconflicting types for 'get_line'[0m
+char *get_line(char *s, int i) {
+[0;1;32m      ^
+[0m[1m./../get_next_line.h:23:6: [0m[0;1;30mnote: [0mprevious declaration is here[0m
+int             get_line(char **stash, char **line);
+[0;1;32m                ^
+[0m[1mtester.c:83:29: [0m[0;1;31merror: [0m[1mincompatible pointer types passing 'char [10000]' to parameter of type 'char **' [-Werror,-Wincompatible-pointer-types][0m
+                char *expected = get_line(content, i);
+[0;1;32m                                          ^~~~~~~
+[0m[1m./../get_next_line.h:23:22: [0m[0;1;30mnote: [0mpassing argument to parameter 'stash' here[0m
+int             get_line(char **stash, char **line);
+[0;1;32m                                ^
+[0m[1mtester.c:83:38: [0m[0;1;31merror: [0m[1mincompatible integer to pointer conversion passing 'int' to parameter of type 'char **' [-Werror,-Wint-conversion][0m
+                char *expected = get_line(content, i);
+[0;1;32m                                                   ^
+[0m[1m./../get_next_line.h:23:36: [0m[0;1;30mnote: [0mpassing argument to parameter 'line' here[0m
+int             get_line(char **stash, char **line);
+[0;1;32m                                              ^
+[0m[1mtester.c:83:9: [0m[0;1;31merror: [0m[1mincompatible integer to pointer conversion initializing 'char *' with an expression of type 'int' [-Werror,-Wint-conversion][0m
+                char *expected = get_line(content, i);
+[0;1;32m                      ^          ~~~~~~~~~~~~~~~~~~~~
+[0m4 errors generated.
+make: [Makefile:24: mandatory] Error 1 (ignored)
+[1mtester.c:53:7: [0m[0;1;31merror: [0m[1mconflicting types for 'get_line'[0m
+char *get_line(char *s, int i) {
+[0;1;32m      ^
+[0m[1m./../get_next_line.h:23:6: [0m[0;1;30mnote: [0mprevious declaration is here[0m
+int             get_line(char **stash, char **line);
+[0;1;32m                ^
+[0m[1mtester.c:83:29: [0m[0;1;31merror: [0m[1mincompatible pointer types passing 'char [10000]' to parameter of type 'char **' [-Werror,-Wincompatible-pointer-types][0m
+                char *expected = get_line(content, i);
+[0;1;32m                                          ^~~~~~~
+[0m[1m./../get_next_line.h:23:22: [0m[0;1;30mnote: [0mpassing argument to parameter 'stash' here[0m
+int             get_line(char **stash, char **line);
+[0;1;32m                                ^
+[0m[1mtester.c:83:38: [0m[0;1;31merror: [0m[1mincompatible integer to pointer conversion passing 'int' to parameter of type 'char **' [-Werror,-Wint-conversion][0m
+                char *expected = get_line(content, i);
+[0;1;32m                                                   ^
+[0m[1m./../get_next_line.h:23:36: [0m[0;1;30mnote: [0mpassing argument to parameter 'line' here[0m
+int             get_line(char **stash, char **line);
+[0;1;32m                                              ^
+[0m[1mtester.c:83:9: [0m[0;1;31merror: [0m[1mincompatible integer to pointer conversion initializing 'char *' with an expression of type 'int' [-Werror,-Wint-conversion][0m
+                char *expected = get_line(content, i);
+[0;1;32m                      ^          ~~~~~~~~~~~~~~~~~~~~
+[0m4 errors generated.
+make: [Makefile:25: mandatory] Error 1 (ignored)
+Want some more thorough tests? run 'francinette --strict'.
+
+Summary: no bonus
+
+Failed tests: gnlTester
+

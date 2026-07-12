@@ -6,7 +6,7 @@
 /*   By: andredos <andredos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/10 16:09:17 by andredos          #+#    #+#             */
-/*   Updated: 2026/07/10 17:54:06 by andredos         ###   ########.fr       */
+/*   Updated: 2026/07/12 19:01:13 by andredos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,31 +35,91 @@ void	safe_realoc(char **line, int new_size)
 	*line = new_line;
 }
 
-void	*ft_calloc(int size)
+void	add_to_stash(char **stash, int *stash_size,
+	char *buffer, int bytes_read)
 {
-	void	*line;
+	int	i;
 
-	line = malloc(size);
-	if (!line)
-		return (NULL);
-	((char *)line)[0] = '\0';
-	return (line);
+	i = 0;
+	if (*stash == NULL)
+	{
+		*stash = malloc(bytes_read + 1);
+		if (!*stash)
+			return ;
+		(*stash)[0] = '\0';
+	}
+	*stash_size += bytes_read;
+	safe_realoc(stash, *stash_size + 1);
+	ft_strncat(*stash, buffer, bytes_read);
+	(*stash)[*stash_size] = '\0';
 }
 
-int	get_fd_nl_size(int fd, int *size)
+void	ft_strncat(char *dest, char *src, int n)
 {
-	char	current_char;
-	int		bytes_read;
+	int	i;
+	int	j;
 
-	*size = 0;
-	while (1)
+	i = 0;
+	while (dest[i] != '\0')
+		i++;
+	dest[i] = '\0';
+	j = 0;
+	while (src[j] != '\0' && j < n)
 	{
-		bytes_read = read(fd, &current_char, 1);
-		if (bytes_read <= 0)
-			break ;
-		(*size)++;
-		if (current_char == '\n')
-			break ;
+		dest[i + j] = src[j];
+		j++;
 	}
-	return (bytes_read);
+	dest[i + j] = '\0';
+}
+
+int	get_line(char **stash, char **line)
+{
+	int	i;
+
+	i = 0;
+	while ((*stash)[i] != '\0' && (*stash)[i] != '\n')
+		i++;
+	*line = malloc(i + 2);
+	if (!*line)
+		return (-1);
+	i = 0;
+	while ((*stash)[i] != '\0' && (*stash)[i] != '\n')
+	{
+		(*line)[i] = (*stash)[i];
+		i++;
+	}
+	if ((*stash)[i] == '\n')
+	{
+		(*line)[i] = '\n';
+		i++;
+	}
+	(*line)[i] = '\0';
+	return (i);
+}
+
+void	remove_line_from_stash(char **stash, int *stash_size, int line_size)
+{
+	int		j;
+	int		new_stash_size;
+	char	*new_stash;
+
+	new_stash_size = *stash_size - line_size;
+	new_stash = malloc(new_stash_size + 1);
+	if (!new_stash)
+	{
+		free(*stash);
+		*stash = NULL;
+		*stash_size = 0;
+		return ;
+	}
+	j = 0;
+	while (j < new_stash_size)
+	{
+		new_stash[j] = (*stash)[line_size + j];
+		j++;
+	}
+	new_stash[j] = '\0';
+	free(*stash);
+	*stash = new_stash;
+	*stash_size = new_stash_size;
 }

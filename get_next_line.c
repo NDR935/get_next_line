@@ -6,7 +6,7 @@
 /*   By: andredos <andredos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/08 17:13:12 by andredos          #+#    #+#             */
-/*   Updated: 2026/07/10 17:54:18 by andredos         ###   ########.fr       */
+/*   Updated: 2026/07/12 18:55:11 by andredos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,43 +14,51 @@
 
 char	*get_next_line(int fd)
 {
-	char		*line;
-	int			line_size;
-	char		current_char;
+	static char	*stash;
+	static int	stash_size;
+	char		buffer[BUFFER_SIZE + 1];
 	int			bytes_read;
+	char		*line;
 
-	if (fd < 0)
-		return (NULL);
-	line_size = 0;
-	line = ft_calloc(1);
-	if (!line)
-		return (NULL);
-	while (1)
+	while (!nl_in_stash(stash, stash_size))
 	{
-		bytes_read = read(fd, &current_char, BUFFER_SIZE);
+		bytes_read = read(fd, buffer, BUFFER_SIZE);
 		if (bytes_read <= 0)
 		{
-			if (line_size == 0)
-            {
-                free(line);
-                return (NULL);
-            }
-			if (line_size > 0)
-                break ;
-            free(line);
-            return (NULL);
+			if (stash == NULL || stash[0] == '\0')
+				return (free(stash), stash = NULL, NULL);
+			else
+				break ;
 		}
-		if (current_char == '\n')
-		{
-			line[line_size++] = '\n';
-			break ;
-		}
-		safe_realoc(&line, line_size + 2);
-		if (!line)
-			return (NULL);
-		line[line_size] = current_char;
-		line_size++;
+		buffer[bytes_read] = '\0';
+		add_to_stash(&stash, &stash_size, buffer, bytes_read);
 	}
-	line[line_size] = '\0';
+	remove_line_from_stash(&stash, &stash_size, get_line(&stash, &line));
+	get_next_line_cleanup(&stash, &stash_size);
 	return (line);
+}
+
+void	get_next_line_cleanup(char **stash, int *stash_size)
+{
+	if (stash_size == 0)
+	{
+		free(stash);
+		stash = NULL;
+	}
+}
+
+int	nl_in_stash(char *stash, int stash_size)
+{
+	int	i;
+
+	i = 0;
+	if (stash == NULL || stash_size == 0)
+		return (0);
+	while (i < stash_size && stash[i] != '\0')
+	{
+		if (stash[i] == '\n')
+			return (1);
+		i++;
+	}
+	return (0);
 }
