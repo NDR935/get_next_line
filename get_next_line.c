@@ -6,7 +6,7 @@
 /*   By: andredos <andredos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/08 17:13:12 by andredos          #+#    #+#             */
-/*   Updated: 2026/07/12 18:55:11 by andredos         ###   ########.fr       */
+/*   Updated: 2026/07/13 15:23:27 by andredos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,46 +15,49 @@
 char	*get_next_line(int fd)
 {
 	static char	*stash;
-	static int	stash_size;
-	char		buffer[BUFFER_SIZE + 1];
-	int			bytes_read;
+	static int	size;
+	char		*buff;
+	int			bytes;
 	char		*line;
 
-	while (!nl_in_stash(stash, stash_size))
+	bytes = 1;
+	buff = malloc(sizeof(char) * (BUFFER_SIZE + 1));
+	if (!buff)
+		return (NULL);
+	while (!nl_in_stash(stash, size) && (bytes > 0))
 	{
-		bytes_read = read(fd, buffer, BUFFER_SIZE);
-		if (bytes_read <= 0)
+		bytes = read(fd, buff, BUFFER_SIZE);
+		if (bytes > 0)
 		{
-			if (stash == NULL || stash[0] == '\0')
-				return (free(stash), stash = NULL, NULL);
-			else
-				break ;
+			buff[bytes] = '\0';
+			add_to_stash(&stash, &size, buff, bytes);
 		}
-		buffer[bytes_read] = '\0';
-		add_to_stash(&stash, &stash_size, buffer, bytes_read);
 	}
-	remove_line_from_stash(&stash, &stash_size, get_line(&stash, &line));
-	get_next_line_cleanup(&stash, &stash_size);
-	return (line);
+	if (bytes < 0 || (bytes == 0 && (!stash || !*stash)))
+		return (free(buff), free(stash), stash = NULL, size = 0, NULL);
+	if (remove_line_from_stash(&stash, &size, extract_line(&stash, &line)))
+		return (free(buff), NULL);
+	get_next_line_cleanup(&stash, &size);
+	return (free(buff), line);
 }
 
-void	get_next_line_cleanup(char **stash, int *stash_size)
+void	get_next_line_cleanup(char **stash, int *size)
 {
-	if (stash_size == 0)
+	if (size == 0)
 	{
 		free(stash);
 		stash = NULL;
 	}
 }
 
-int	nl_in_stash(char *stash, int stash_size)
+int	nl_in_stash(char *stash, int size)
 {
 	int	i;
 
 	i = 0;
-	if (stash == NULL || stash_size == 0)
+	if (stash == NULL || size == 0)
 		return (0);
-	while (i < stash_size && stash[i] != '\0')
+	while (i < size && stash[i] != '\0')
 	{
 		if (stash[i] == '\n')
 			return (1);

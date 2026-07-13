@@ -6,7 +6,7 @@
 /*   By: andredos <andredos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/10 16:09:17 by andredos          #+#    #+#             */
-/*   Updated: 2026/07/12 19:01:13 by andredos         ###   ########.fr       */
+/*   Updated: 2026/07/13 15:20:55 by andredos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,6 @@ void	safe_realoc(char **line, int new_size)
 void	add_to_stash(char **stash, int *stash_size,
 	char *buffer, int bytes_read)
 {
-	int	i;
-
-	i = 0;
 	if (*stash == NULL)
 	{
 		*stash = malloc(bytes_read + 1);
@@ -72,7 +69,7 @@ void	ft_strncat(char *dest, char *src, int n)
 	dest[i + j] = '\0';
 }
 
-int	get_line(char **stash, char **line)
+int	extract_line(char **stash, char **line)
 {
 	int	i;
 
@@ -97,21 +94,18 @@ int	get_line(char **stash, char **line)
 	return (i);
 }
 
-void	remove_line_from_stash(char **stash, int *stash_size, int line_size)
+int	remove_line_from_stash(char **stash, int *stash_size, int line_size)
 {
 	int		j;
 	int		new_stash_size;
 	char	*new_stash;
 
+	if (line_size == -1)
+		return (free(*stash), *stash = NULL, *stash_size = 0, -1);
 	new_stash_size = *stash_size - line_size;
 	new_stash = malloc(new_stash_size + 1);
 	if (!new_stash)
-	{
-		free(*stash);
-		*stash = NULL;
-		*stash_size = 0;
-		return ;
-	}
+		return (free(*stash), *stash = NULL, *stash_size = 0, -1);
 	j = 0;
 	while (j < new_stash_size)
 	{
@@ -122,4 +116,5 @@ void	remove_line_from_stash(char **stash, int *stash_size, int line_size)
 	free(*stash);
 	*stash = new_stash;
 	*stash_size = new_stash_size;
+	return (0);
 }
