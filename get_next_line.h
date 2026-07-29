@@ -6,7 +6,7 @@
 /*   By: andredos <andredos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/08 17:13:58 by andredos          #+#    #+#             */
-/*   Updated: 2026/07/13 15:21:31 by andredos         ###   ########.fr       */
+/*   Updated: 2026/07/29 18:45:18 by andredos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,5 +25,9 @@ int		remove_line_from_stash(char **stash, int *stash_size, int line_size);
 void	ft_strncat(char *dest, char *src, int n);
 int		nl_in_stash(char *stash, int stash_size);
 void	get_next_line_cleanup(char **stash, int *stash_size);
+
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 42
+# endif
 
 #endif
